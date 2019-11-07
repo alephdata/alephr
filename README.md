@@ -2,7 +2,7 @@
 
 This package aims to provide a simple wrapper for the API exposed by [OCCRP's Aleph tool](https://docs.alephdata.org/). Currently it provides one useful function, `get_xref_results()`, which downloads cross-referencing results for a pair of collections as an R data frame.
 
-The documentation for the Aleph API is available [here](https://tibble.tidyverse.org/).
+The documentation for the Aleph API is available [here](https://alephdata.github.io/aleph/).
 
 ## Usage
 
