@@ -35,16 +35,20 @@ request_xref_results <- function(collection_id, match_collection_id, limit, offs
 
 get_xref_results <- function(collection_id, match_collection_id, limit = 50) {
 
-  print(str_c("Getting matches 0-", limit, "..."))
+  print(str_c("Checking for matches..."))
   initial_results <- request_xref_results(collection_id, match_collection_id, limit, 0)
   total <- content(initial_results, "parsed")$total
-  offsets <- tail(seq(0, total, limit), -1)
+  if(!is.null(total)) {
+    offsets <- tail(seq(0, total, limit), -1)
 
-  remainder_results <- map(offsets, function(offset) {
-    print(str_c("Getting matches ", offset, "-", offset + limit, "..."))
-    results <- request_xref_results(collection_id, match_collection_id, limit, offset)
-    parse_xref_results(results)
-  })
+    remainder_results <- map(offsets, function(offset) {
+      print(str_c("Getting matches ", offset, "-", offset + limit, "..."))
+      results <- request_xref_results(collection_id, match_collection_id, limit, offset)
+      parse_xref_results(results)
+    })
 
-  bind_rows(c(list(parse_xref_results(initial_results)), remainder_results))
+    bind_rows(c(list(parse_xref_results(initial_results)), remainder_results))
+  } else {
+    print("No matches found! Have you cross-referenced the collections?")
+  }
 }
